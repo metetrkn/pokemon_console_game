@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from pokemonNames import all_pokemons
+import pandas as pd
 
 # Contains each pokemon's names and their skills
 pokedex = {}
@@ -49,3 +50,11 @@ for pokemon_name in all_pokemons:
 # Print the extracted Pokemon data
 for pokemon, stats in pokedex.items():
     print(f"{pokemon}: {stats}")
+
+# Create DataFrame from pokedex
+df = pd.DataFrame(pokedex).T
+
+# Add 'images' column from dict1
+df['images'] = df.index.map(image_dict)
+
+print(df.head())

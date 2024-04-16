@@ -25,3 +25,4 @@ for section in generations_pokemon:
     for name in pokemon_names:
         all_pokemons.append(name)
 
+print(all_pokemons)

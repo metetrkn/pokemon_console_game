@@ -17,7 +17,7 @@ for img in soup.find_all('img', src=True):
 image_dict = {all_pokemons[i]: pokemon_thumbnails[i] for i in range(len(all_pokemons))}
 
 for name_, url_ in image_dict.items():
-    filename = f"pokemon_images/{name_}.png"
+    filename = f"/home/desktop/game/pokemon_images/{name_}.png"
     # Send a GET request to the image URL
     response = requests.get(url_)
      # Check if the request was successful (status code 200)

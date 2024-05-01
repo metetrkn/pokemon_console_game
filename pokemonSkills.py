@@ -2,6 +2,16 @@ import requests
 from bs4 import BeautifulSoup
 from pokemonNames import all_pokemons
 import pandas as pd
+from pymongo import MongoClient
+
+# Connect the connection to the MongoDB instance, you may need to adjust host:port the same in pokemonNames.py
+client = MongoClient("mongodb://127.0.0.1:27017")
+
+# Conneceting db
+db = client["pokemonData"] 
+
+# Connecting the collection 
+collection = db["pokedex"]  
 
 # Contains each pokemon's names and their skills
 pokedex = {}
@@ -46,15 +56,7 @@ for pokemon_name in all_pokemons:
             stats_dict[key] = value
 
         pokedex[pokemon_name] = stats_dict
+        collection.update_one({"_id": pokemon_name}, {"$set": {"agility": pokedex[pokemon_name]}})
 
-# Print the extracted Pokemon data
-for pokemon, stats in pokedex.items():
-    print(f"{pokemon}: {stats}")
-
-# Create DataFrame from pokedex
-df = pd.DataFrame(pokedex).T
-
-# Add 'images' column from dict1
-df['images'] = df.index.map(image_dict)
-
-print(df.head())
+# Closing database connection 
+client.close() 

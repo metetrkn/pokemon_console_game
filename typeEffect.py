@@ -1,6 +1,16 @@
 from bs4 import BeautifulSoup
 import requests
 from pokemonNames import all_pokemons
+from pymongo import MongoClient
+
+# Connect the connection to the MongoDB instance, you may need to adjust host:port the same in pokemonNames.py
+client = MongoClient("mongodb://127.0.0.1:27017")
+
+# Conneceting db
+db = client["pokemonData"] 
+
+# Connecting the collection 
+collection = db["pokedex"]  
 
 # Function to scrape the table after the "Type_effectiveness" header from a given URL
 def scrape_base_stats_table(url):
@@ -32,8 +42,6 @@ fractions_dict = {
     '⅔': 2/3,
     '¹⁄₁₆': 1/16
 }
-
-
 
 for pokemon in all_pokemons:
     url = f"https://bulbapedia.bulbagarden.net/wiki/{pokemon}_(Pok%C3%A9mon)"
@@ -70,10 +78,16 @@ for pokemon in all_pokemons:
                 # Extracting effects and their values into dict
                 if multiplier in fractions_dict.keys():
                     multiplier = fractions_dict[multiplier]
-                    types_effects[pokemon][main_row][type_name] = round(multiplier,1)        
+                    types_effects[pokemon][main_row][type_name] = round(multiplier,1)
+                          
                 else:
                     types_effects[pokemon][main_row][type_name] = int(multiplier)
-   
-                
+
+    # Adding effects of different types into mongodb
+    collection.update_one({"_id": pokemon}, {"$set": {"effects": types_effects[pokemon]}})
+
+# Closing database connection 
+client.close() 
+
 
 

@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-from unicodedata import numeric
 from pokemonNames import all_pokemons
 
 # Function to scrape the table after the "Type_effectiveness" header from a given URL
@@ -18,6 +17,23 @@ def scrape_base_stats_table(url):
 
 # Python dict which contains pokemon type effectiveness
 types_effects = {}
+
+# Dict to use to convert unicode fraction effects into fractions numbers
+fractions_dict = {
+    '¼': 1/4,
+    '⅓': 1/3,
+    '½': 1/2,
+    '⅕': 1/5,
+    '⅙': 1/6,
+    '⅐': 1/7,
+    '⅛': 1/8,
+    '⅑': 1/9,
+    '⅒': 1/10,
+    '⅔': 2/3,
+    '¹⁄₁₆': 1/16
+}
+
+
 
 for pokemon in all_pokemons:
     url = f"https://bulbapedia.bulbagarden.net/wiki/{pokemon}_(Pok%C3%A9mon)"
@@ -46,17 +62,18 @@ for pokemon in all_pokemons:
         
         # Inner cells
         for type in power_effect:
+            # all effect type and its value exist with "a" tag in html code
             a_tag = type.find('a')
             if a_tag:
                 type_name = a_tag.text.strip()
                 multiplier = type.find_all('td')[1].text.strip()[:-1] 
                 # Extracting effects and their values into dict
-                ### numeric() func error veriyor, unicode olmali str deigil diye coz
-                types_effects[pokemon][main_row][type_name] = numeric(multiplier)
+                if multiplier in fractions_dict.keys():
+                    multiplier = fractions_dict[multiplier]
+                    types_effects[pokemon][main_row][type_name] = round(multiplier,1)        
+                else:
+                    types_effects[pokemon][main_row][type_name] = int(multiplier)
+   
+                
 
 
-
-
-for key, value in types_effects.items():
-    print(key + ":")
-    print(value)

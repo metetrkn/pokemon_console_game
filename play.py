@@ -38,26 +38,9 @@ class Pokemon:
         print(f"{self.name} health = {self.current_health}")
 
 class Fight:
-    def __init__(self, pokemon1, pokemon2):
-        self.pokemon1 = pokemon1
-        self.pokemon2 = pokemon2
-        self.current_turn = 0
-        print("="*50)
-        print("+"*50)
-        print("="*50)
-        print("Welcome to the Pokémon Game!")
-        print("Programmer: Mete Turkan")
-        print("Today's Date: 2024-05-02")
-        print("="*50)
-        print("+"*50)
-        print("="*50)
-
-    def switch_turn(self):
-        self.current_turn = (self.current_turn + 1) % 2
-
-    def start_fight(self):
-        attacker = self.pokemon1 if self.current_turn == 0 else self.pokemon2
-        defender = self.pokemon2 if self.current_turn == 0 else self.pokemon1
+    def start_fight(self, warrior1, worrior2):         
+        attacker = warrior1 if self.current_turn == 0 else worrior2
+        defender = worrior2 if self.current_turn == 0 else warrior1
 
         while True:
             print(f"It's {attacker.name}'s turn.")
@@ -70,15 +53,18 @@ class Fight:
                     print("Critical Hit!")
                 defender.current_health = round(max(0, defender.current_health - damage), 1)
                 print(f"{attacker.name} attacks with {damage} PP, {defender.name} got injured.")
-                print(f"{self.pokemon1.name} health = {self.pokemon1.current_health} HP, {self.pokemon2.name} health = {self.pokemon2.current_health} HP")
+                print(f"{warrior1.name} health = {warrior1.current_health} HP, {worrior2.name} health = {worrior2.current_health} HP")
                 print("="*50)
 
                 if defender.current_health <= 0:
                     print(f"{defender.name} fainted!")
-                    break
+                    
+                    # Updating teams with reamining pokemonss
+                    self.teams_remainings()
+
             elif choice == '2':
                 attacker.revive()
-                print(f"{self.pokemon1.name} health = {self.pokemon1.current_health} HP, {self.pokemon2.name} health = {self.pokemon2.current_health} HP")
+                print(f"{warrior1.name} health = {round(warrior1.current_health, 1)} HP, {worrior2.name} health = {round(worrior2.current_health, 1)} HP")
                 print("="*50)
             elif choice == '3':
                 print("Thanks for playing! Farewell!")
@@ -88,8 +74,100 @@ class Fight:
                 print("="*50)
 
             self.switch_turn()
-            attacker = self.pokemon1 if self.current_turn == 0 else self.pokemon2
-            defender = self.pokemon2 if self.current_turn == 0 else self.pokemon1
+            attacker = warrior1 if self.current_turn == 0 else worrior2
+            defender = worrior2 if self.current_turn == 0 else warrior1
+
+
+    def __init__(self, pokTeam1, pokTeam2):
+        self.pokTeam1 = pokTeam1
+        self.pokTeam2 = pokTeam2
+        self.current_turn = 0
+        print("="*50)
+        print("+"*50)
+        print("="*50)
+        print("Welcome to the Pokémon Game!")
+        print("Programmer: Mete Turkan")
+        print("Today's Date: 2024-05-02")
+        print("="*50)
+        print("+"*50)
+        print("="*50)
+
+        # Creating a system to make teams to choose their 1st pokemon for 1st round
+        if game_mode == '1':
+            self.t1_fist_pok = 0
+            self.t2_fist_pok = 0
+        elif game_mode == '3':
+            self.t1_fist_pok = int(input(f"Team1 chooses 1st round pokemon * Enter the number to choose\t\t:0={self.pokTeam1[0].name}\t\t1={self.pokTeam1[1].name}\t\t2={self.pokTeam1[2].name} ==>"))
+            self.t2_fist_pok = int(input(f"Team2 chooses 1st round pokemon * Enter the number to choose\t\t:0={self.pokTeam2[0].name}\t\t1={self.pokTeam2[1].name}\t\t2={self.pokTeam2[2].name} ==>"))
+        else:
+            self.t1_fist_pok = int(input(f"Team1 chooses 1st round pokemon * Enter the number to choose\t\t:0= \
+    {self.pokTeam1[0].name}\t\t1={self.pokTeam1[1].name}\t\t2={self.pokTeam1[2].name}\t\t3={self.pokTeam1[3].name}\t\t4={self.pokTeam1[4].name}\t\t5={self.pokTeam1[5].name} ==>"))
+            self.t2_fist_pok = int(input(f"Team2 chooses 1st round pokemon * Enter the number to choose\t:0= \
+    {self.pokTeam2[0].name}\t\t1={self.pokTeam2[1].name}\t\t2={self.pokTeam2[2].name}\t\t3={self.pokTeam2[3].name}\t\t4={self.pokTeam2[4].name}\t\t5={self.pokTeam2[5].name} ==>"))
+        
+        self.start_fight(pokTeam1[self.t1_fist_pok], pokTeam2[self.t2_fist_pok])
+     
+
+    def switch_turn(self):
+        self.current_turn = (self.current_turn + 1) % 2
+
+    def teams_remainings(self):
+        # New teams list which contains that pokemons have more than 0 HP
+        remainings_t1 = []
+        remainings_t2 = []
+
+        # Adding new teams list with not fainted pokemons
+        # Number of remaining pokemon per team
+        num1 = len(self.pokTeam1)
+        num2 = len(self.pokTeam2)
+
+        # Updating Team1
+        for i in range(num1):
+            if self.pokTeam1[i].current_health > 0:
+                remainings_t1.append(self.pokTeam1[i])
+        
+        # Updating Team2
+        for i in range(num2):
+            if self.pokTeam2[i].current_health > 0:
+                remainings_t2.append(self.pokTeam2[i])     
+
+        # If one of teams all pokemon is fainted, other player wins!
+        if len(remainings_t1) == 0:
+            print("Team2 has winned the game! Congrats!!!")
+            exit()
+        elif len(remainings_t2) == 0:
+            print("Team1 has winned the game! Congrats!!!")
+            exit()
+
+        # Updating teams with not fainted pokemons
+        self.pokTeam1 = remainings_t1 
+        self.pokTeam2 = remainings_t2 
+
+        # Fainted pokemon's team chooses new pokemon for next round
+        self.choosing_to_fight()
+
+    def choosing_to_fight(self):  
+        # Team1 chooses its new pokemon for new round
+        which_pokemon = 0
+        for pokemon_remaining in self.pokTeam1:
+            print(which_pokemon, ": ", pokemon_remaining.name, "\t\t", end="")
+            which_pokemon += 1
+        warrior1 = int(input("Choose\t:"))
+        print(f"{self.pokTeam1[warrior1].name} I choose you!")
+        warrior1 = self.pokTeam1[warrior1]
+
+        # Team2 chooses its new pokemon for new round
+        which_pokemon = 0
+        for pokemon_remaining in self.pokTeam2:
+            print(which_pokemon, ": ", pokemon_remaining.name, "\t\t", end="")
+            which_pokemon += 1
+        warrior2 = int(input("Choose\t:"))
+        print(f"{self.pokTeam2[warrior2].name} I choose you!")
+        warrior2 = self.pokTeam2[warrior2]
+
+        # New round begins with newly choosen pokemons
+        self.start_fight(warrior1, warrior2)
+
 
 
 # Connect to MongoDB
@@ -112,17 +190,40 @@ def document_to_pokemon(document):
     type_ = document['type']
     return Pokemon(name, base_health, stats, effects, type_)
 
-# Get user input for Pokémon names
-which_pokemon1 = input("Enter the name of the first Pokémon: ").strip()
-which_pokemon2 = input("Enter the name of the second Pokémon: ").strip()
 
-# Fetch Pokémon data from MongoDB and create Pokémon instances
-player1 = collection.find_one({"_id": which_pokemon1}, {"agility": 1, "effects": 1, "type": 1})
-player2 = collection.find_one({"_id": which_pokemon2}, {"agility": 1, "effects": 1, "type": 1})
-pok1 = document_to_pokemon(player1)
-pok2 = document_to_pokemon(player2)
+def choose_pokemons(num_pokemon, team):
+    pokemons = []
+    i = 0
+    while len(pokemons) < num_pokemon:
+        pokemon_name = input(f"Enter the name of {i+1}. Pokémon for {team}: ").strip()
+        pokemon_data = collection.find_one({"_id": pokemon_name}, {"agility": 1, "effects": 1, "type": 1})
+        if pokemon_data:
+            pokemon_instance = document_to_pokemon(pokemon_data)
+            pokemons.append(pokemon_instance)
+            i += 1
+        else:
+            print(f"Error: Pokémon {pokemon_name} not found in the database.")
+    return pokemons
+
+
+# Get user input for the game mode
+game_mode = input("Enter the desired game mode (1\t for 1 vs 1, 3\t for 3 vs 3, 6\t for 6 vs 6): ").strip()
+
+# Choose Pokémon based on game mode
+if game_mode == '1':
+    team1 = choose_pokemons(1,"team-1")
+    team2 = choose_pokemons(1,"team-2")
+elif game_mode == '3':
+    team1 = choose_pokemons(3,"team-1")
+    team2 = choose_pokemons(3,"team-2")
+elif game_mode == '6':
+    team1 = choose_pokemons(6,"team-1")
+    team2 = choose_pokemons(6,"team-2")
+else:
+    print("Invalid game mode. Please choose 1, 3, or 6.")
 
 # Start the fight
-fight = Fight(pok1, pok2)
+fight = Fight(team1, team2)
 fight.start_fight()
+
 

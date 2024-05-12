@@ -44,7 +44,7 @@ class Fight:
 
         while True:
             print(f"It's {self.attacker.name}'s turn.")
-            choice = input("Enter 1 to attack, 2 to revive, 3 to quit: ")
+            choice = input("Enter 1 to attack, 2 to revive, 3 to substitute, 4 to quit: ")
             if choice == '1':
                 damage, random_factor, move_type = self.attacker.calculate_damage(self.defender)
                 if random_factor == 0:
@@ -67,8 +67,10 @@ class Fight:
                 print(f"{warrior1.name} health = {round(warrior1.current_health, 1)} HP, {worrior2.name} health = {round(worrior2.current_health, 1)} HP")
                 print("="*50)
             elif choice == '3':
+                self.substitute()
+            elif choice == '4':
                 print("Thanks for playing! Farewell!")
-                return
+                exit()
             else:
                 print("Invalid choice.")
                 print("="*50)
@@ -110,6 +112,38 @@ class Fight:
 
     def switch_turn(self):
         self.current_turn = (self.current_turn + 1) % 2
+
+    def substitute(self):
+        # Allowing attacker team to substitute new pokemon, new team detected based on current_turn 
+        # If current_turn = 0 - Team1 attacks, if current_turn = 1 Team2 attacks.
+        if self.current_turn == 0:
+            print(f"{self.attacker.name}, return!")
+            # Team1 chooses its new pokemon for new round
+            which_pokemon = 0
+            for pokemon_remaining in self.pokTeam1:
+                print(which_pokemon, ": ", pokemon_remaining.name, "\t\t", end="")
+                which_pokemon += 1
+            warrior1 = int(input("Choose\t:"))
+            print(f"{self.pokTeam1[warrior1].name} I choose you!")
+            warrior2 = self.pokTeam1[warrior1]
+            warrior1 = self.defender
+
+
+        else:
+            print(f"{self.attacker.name}, return!")
+            # Team2 chooses its new pokemon for new round
+            which_pokemon = 0
+            for pokemon_remaining in self.pokTeam2:
+                print(which_pokemon, ": ", pokemon_remaining.name, "\t\t", end="")
+                which_pokemon += 1
+            warrior2 = int(input("Choose\t:"))
+            print(f"{self.pokTeam2[warrior2].name} I choose you!")
+            warrior1 = self.pokTeam2[warrior2] # chosen pokemon instead of fainted defender
+            warrior2 = self.defender # current attacker
+
+        # New round begins with newly choosen pokemons
+        self.start_fight(warrior1, warrior2)
+
 
     def teams_remainings(self):
         if self.current_turn == 0:

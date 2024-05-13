@@ -62,6 +62,62 @@ while running:
                         else:
                             pygame.mixer.music.unpause()
                             music_playing = True
+                    elif button_name in ["1vs1", "3vs3", "6vs6"]:
+
+
+                        # Scene for 1vs1, 3vs3, and 6vs6 buttons clicked
+                        while True:
+                            for event in pygame.event.get():
+                                if event.type == pygame.QUIT:
+                                    pygame.quit()
+                                    quit()
+                                elif event.type == pygame.MOUSEBUTTONDOWN:
+                                    if button_rects["music"].collidepoint(event.pos):
+                                        if music_playing:
+                                            pygame.mixer.music.pause()
+                                            music_playing = False
+                                        else:
+                                            pygame.mixer.music.unpause()
+                                            music_playing = True
+                                    elif exit_button_rect.collidepoint(event.pos):  # Check if exit button is clicked
+                                        running = False  # Exit the scene
+                                        break  # Exit the scene loop
+                                    elif "vs" not in button_name:
+                                        print(f"Clicked on {button_name}")
+
+                            if not running:  # Check if the scene should exit
+                                break  # Exit the main scene loop
+
+                            screen.fill((255, 255, 255))
+                            screen.blit(menu_image, (0, 0))
+
+                            # Draw exit button
+                            exit_button_rect = button_rects["exit"].copy()
+                            exit_button_rect.topleft = (10, 10)  # Set the position of the exit button rectangle
+                            pygame.draw.rect(screen, DARK_PINK, exit_button_rect)
+                            pygame.draw.rect(screen, LIGHT_PINK, exit_button_rect.inflate(-5, -5))
+                            # Draw "Exit" text
+                            text_surface = font.render("Exit", True, WHITE)
+                            text_rect = text_surface.get_rect(topleft=(20, 20))  # Position the "Exit" text
+                            screen.blit(text_surface, text_rect)
+
+                            # Draw music button
+                            pygame.draw.rect(screen, DARK_BROWN, button_rects["music"])
+                            pygame.draw.rect(screen, LIGHT_BROWN, button_rects["music"].inflate(-5, -5))
+                            if music_playing:
+                                text_surface = font.render("Music", True, BLACK)
+                            else:
+                                text_surface = font.render("Music", True, WHITE)
+                            text_rect = text_surface.get_rect(center=button_rects["music"].center)
+                            screen.blit(text_surface, text_rect)
+
+                            pygame.display.flip()
+
+
+
+
+
+
                     else:
                         print(f"Clicked on {button_name}")
 
@@ -73,15 +129,9 @@ while running:
 
     # Draw buttons on top of the menu image with 3D effect
     for button_name, rect in button_rects.items():
-        if button_name == "1vs1":
+        if button_name in ["1vs1", "3vs3", "6vs6"]:
             pygame.draw.rect(screen, DARK_BROWN, rect)
             pygame.draw.rect(screen,LIGHT_BROWN, rect.inflate(-5, -5))
-        elif button_name == "3vs3":
-            pygame.draw.rect(screen, DARK_GREEN, rect)
-            pygame.draw.rect(screen, LIGHT_GREEN, rect.inflate(-5, -5))
-        elif button_name == "6vs6":
-            pygame.draw.rect(screen, DARK_GRAY, rect)
-            pygame.draw.rect(screen, LIGHT_GRAY, rect.inflate(-5, -5))
         elif button_name == "exit":
             pygame.draw.rect(screen, DARK_PINK, rect)
             pygame.draw.rect(screen, LIGHT_PINK, rect.inflate(-5, -5))

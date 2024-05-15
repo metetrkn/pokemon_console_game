@@ -20,9 +20,12 @@ pip install -r requirements.txt
 
 ## Usage
 
+### Installation
+ - **installation.sh**: Installs all programms, tools and libraries needed to play the game. Execute it, It could take some time to complete all scraping.
+
 ### Data Collection
 
-- **pokemonNames.py**: Collects Pokémon data from Bulbapedia's list of Pokémon by ability.
+- **pokemonNames.py**: Collects Pokémon data from Bulbapedia's list of Pokémon bay ability.
 - **pokemonImg.py**: Downloads Pokémon images from Bulbapedia and stores them in MongoDB database.
 - **pokemonSkills.py**: Retrieves Pokémon base stats from Bulbapedia pages.
 - **typeEffect.py**: Gathers Pokémon type effectiveness data from Bulbapedia.
@@ -45,10 +48,11 @@ pip install -r requirements.txt
 ### Console-Based Battle System
 
 - **pokeTypes.py** and **play.py**: Implements the console-based battle system for Pokémon battles.
-- Defines Pokémon and Fight classes for battle simulation.
-- Fetches Pokémon data from MongoDB to create Pokémon instances.
-- Initiates battles, switches turns, and executes player actions (attack or revive).
-- Provides a user-friendly console interface for players to engage in battles.
+- **play.py**  implements the console-based battle system for Pokémon battles. It defines Pokemon and Fight classes for battle simulation. The Pokemon class has attributes such as name, base health, stats, effects, and type. The Fight class manages the battle between two Pokémon, including initiating battles, switching turns, and executing player actions such as attacking or reviving.
+- **play.py** The play.py script fetches Pokémon data from MongoDB to create Pokémon instances. It calculates damage based on the attacking and defending Pokémon's stats, type effectiveness, and a random factor. The script also allows players to revive their fainted Pokémon or substitute a new Pokémon during the battle.
+- The Fight class provides a user-friendly console interface for players to engage in battles. It displays the current health of each Pokémon, the damage dealt, and the type of attack used. The script also handles the logic for determining the winner of the battle based on the remaining health of each Pokémon.
+
+- To run the console-based battle system, simply execute the play.py script with the required dependencies installed. The script will prompt the user to select the game mode and choose their Pokémon for the battle. Once the battle begins, the user can input their desired actions for each turn until the battle is over.
 
 ## Contributors
 

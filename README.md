@@ -9,7 +9,7 @@ To run the Pokémon game project, follow these steps:
 1. Clone the repository to your local machine:
 
 ```bash
-$ git clone https://github.com/your_username/pokemon-game.git
+git clone https://github.com/your_username/pokemon-game.git
 ```
 
 2. Open the console wherever game files located:
@@ -17,19 +17,19 @@ $ git clone https://github.com/your_username/pokemon-game.git
 3. Execute installation.sh file, give permissions if it is needed:
 
 ```bash
-$ ./installation.sh
+./installation.sh
 ```
 
 4. After installations is done, execute play.py file to play the game:
 
 ```bash
-$ ./play.py
+./play.py
 ```
 
 ## Usage
 
 ### Installation
- - **installation.sh**: Installs all programms, tools and libraries needed to play the game. Execute it, It could take some time to complete all scraping.
+ - **installation.sh**: Installs all programs, tools and libraries needed to play the game. Execute it, It could take some time to complete all scraping.
 
 ### Data Collection
 
@@ -57,10 +57,13 @@ $ ./play.py
 
 - **pokeTypes.py** and **play.py**: Implements the console-based battle system for Pokémon battles.
 - **play.py**  implements the console-based battle system for Pokémon battles. It defines Pokemon and Fight classes for battle simulation. The Pokemon class has attributes such as name, base health, stats, effects, and type. The Fight class manages the battle between two Pokémon, including initiating battles, switching turns, and executing player actions such as attacking or reviving.
-- **play.py** The play.py script fetches Pokémon data from MongoDB to create Pokémon instances. It calculates damage based on the attacking and defending Pokémon's stats, type effectiveness, and a random factor. The script also allows players to revive their fainted Pokémon or substitute a new Pokémon during the battle.
+- The **play.py** script fetches Pokémon data from MongoDB to create Pokémon instances. It calculates damage based on the attacking and defending Pokémon's stats, type effectiveness, and a random factor. The script also allows players to revive their fainted Pokémon or substitute a new Pokémon during the battle.
 - The Fight class provides a user-friendly console interface for players to engage in battles. It displays the current health of each Pokémon, the damage dealt, and the type of attack used. The script also handles the logic for determining the winner of the battle based on the remaining health of each Pokémon.
 
 - To run the console-based battle system, simply execute the play.py script with the required dependencies installed. The script will prompt the user to select the game mode and choose their Pokémon for the battle. Once the battle begins, the user can input their desired actions for each turn until the battle is over.
+
+### Upcoming Features
+- There will be GUI to make  gaming experience even better. Pictures of pokemons are allready collected and implemented into mongodb file. These pictures will be used in GUI.
 
 ## Contributors
 

@@ -23,7 +23,7 @@ git clone https://github.com/your_username/pokemon-game.git
 4. After installations is done, execute play.py file to play the game:
 
 ```bash
-./play.py
+python3 play.py
 ```
 
 ## Usage

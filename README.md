@@ -9,13 +9,21 @@ To run the Pokémon game project, follow these steps:
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your_username/pokemon-game.git
+$ git clone https://github.com/your_username/pokemon-game.git
 ```
 
-2. Install the required dependencies:
+2. Open the console wherever game files located:
+
+3. Execute installation.sh file, give permissions if it is needed:
 
 ```bash
-pip install -r requirements.txt
+$ ./installation.sh
+```
+
+4. After installations is done, execute play.py file to play the game:
+
+```bash
+$ ./play.py
 ```
 
 ## Usage
